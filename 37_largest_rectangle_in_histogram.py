@@ -2,21 +2,22 @@
 # ✅ Return area of largest rectangle in histogram bars.
 
 def largestRectangleArea(heights):
-    stack = []        # Stack to store indices
-    max_area = 0      # Maximum area found
-    heights.append(0) # Sentinel bar to pop all bars at the end
+    stack = []         # Store indices of bars
+    max_area = 0
+    heights.append(0)  # Add a dummy bar to clear the stack at the end
 
     for i, h in enumerate(heights):
-        # Keep popping while the current bar is shorter than stack top
+        # If the current bar is lower than the stack top, calculate area
         while stack and h < heights[stack[-1]]:
-            top_idx = stack.pop()
-            height = heights[top_idx]
-            # If stack is empty, rectangle extends to beginning
+            top = stack.pop()
+            height = heights[top]
+            # If stack is empty, width = i (from beginning)
             width = i if not stack else i - stack[-1] - 1
-            max_area = max(max_area, height * width)
+            area = height * width
+            max_area = max(max_area, area)
         stack.append(i)
 
-    heights.pop()  # Remove the sentinel
+    heights.pop()  # Remove the dummy bar
     return max_area
 
 # ----------------------------------------------------------
